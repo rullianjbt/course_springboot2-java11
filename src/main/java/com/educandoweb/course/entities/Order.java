@@ -42,7 +42,8 @@ public class Order implements Serializable {
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>();
 
-	//No caso de 1 para 1 com o mapeamento feito para se ter o mesmo código, ex: pedido código 5 >> pagamento código 5 é necessário o cascade ALL
+	// No caso de 1 para 1 com o mapeamento feito para se ter o mesmo código, ex:
+	// pedido código 5 >> pagamento código 5 é necessário o cascade ALL
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
 	private Payment payment;
 
@@ -106,6 +107,14 @@ public class Order implements Serializable {
 
 	public void setPayment(Payment payment) {
 		this.payment = payment;
+	}
+
+	public Double getTotal() {
+		double sum = 0.0;
+		for (OrderItem x : items) {
+			sum += x.getSubTotal();
+		}
+		return sum;
 	}
 
 	@Override
